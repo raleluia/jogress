@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Digimon TCG Card Search
+
+I've always wanted a Scryfall equivalent for the Digimon Card Game. This is my attempt at building one.
+
+It lets you search cards by name or description, browse by set, and dig into individual card detail pages.
+
+---
+
+## Stack
+
+- **Next.js 15** (App Router, Server Components)
+- **TypeScript**
+- **Tailwind CSS**
+- **[digimoncard.io](https://digimoncard.io) public API**  all card data comes from here
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+app/
+├── components/     # CardGrid, Pagination, Navbar, etc.
+├── search/         # Search & browse page
+├── cards/[id]/     # Card detail page
+├── sets/           # Set browser
+└── types/          # DigimonCard and other shared types
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The search runs two parallel API calls one by name, one by description and merges the results. The API has a quirk where it returns all cards as a fallback when nothing matches, so results are validated client-side before merging to strip out the noise.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Acknowledgements
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [digimoncard.io](https://digimoncard.io) for the free public API
+- [Scryfall](https://scryfall.com) for the inspiration

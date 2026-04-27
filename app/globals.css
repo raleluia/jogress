@@ -6,14 +6,28 @@
 }
 
 @theme {
-  /* Jogress brand colors — dark card-game aesthetic */
-  --color-bg:        #0f0e0c;
-  --color-surface:   #1a1917;
-  --color-border:    #2e2c29;
-  --color-text:      #e8e6e2;
-  --color-muted:     #7a7874;
-  --color-primary:   #e8a020;   /* warm amber — Digimon energy */
-  --color-primary-hover: #d08a10;
+  /* Dark surfaces */
+  --color-bg:            #0a0c0f;
+  --color-surface:       #111318;
+  --color-surface-2:     #181c22;
+  --color-border:        #1e2530;
+  --color-border-hover:  #2a3545;
+
+  /* Text */
+  --color-text:          #e2e8f0;
+  --color-muted:         #64748b;
+  --color-faint:         #334155;
+
+  /* Blue accent */
+  --color-primary:       #3b82f6;
+  --color-primary-hover: #2563eb;
+
+  /* Green accent */
+  --color-secondary:       #22c55e;
+  --color-secondary-hover: #16a34a;
+
+  /* Error */
+  --color-error: #ef4444;
 
   /* Fonts */
   --font-display: 'Rajdhani', 'Arial Narrow', sans-serif;
@@ -23,6 +37,7 @@
   --radius-card: 0.5rem;
   --radius-full: 9999px;
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -34,5 +49,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+   font-family: Arial, Helvetica, sans-serif;
 }

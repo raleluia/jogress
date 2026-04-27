@@ -1,53 +1,70 @@
-import type { DigimonCard } from "@/types/digimon"
+import { Suspense } from 'react'
+import type { DigimonCard } from '@/types/digimon'
+import SearchBar from './components/SearchBar'
+import CardGrid from '@/app/components/CardGrid'
+async function getRandomCards(): Promise<DigimonCard[]> {
+  const res = await fetch(
+    'https://digimoncard.io/api-public/search?sort=random&type=Digimon&series=Digimon%20Card%20Game&limit=6',
+    { cache: 'no-store' }   // ← fresh on every request
+  )
+  if (!res.ok) return []
+  return res.json()
+}
 
 export default async function HomePage() {
-  const res = await fetch(
-    'https://digimoncard.io/api-public/search?sort=name&sortdirection=asc&pagenum=0&type=Digimon',
-    { next: { revalidate: 3600 } }
-  )
+  const randomCards = await getRandomCards()
 
-  if (!res.ok) {
-    throw new Error(`API error: ${res.status}`)
-  }
+  return (
+    <main className="min-h-screen bg-bg flex flex-col">
 
-  const data: DigimonCard[] = await res.json()
-  const seen = new Set<string>()
-  const cards = data.filter((card) => {
-    if (seen.has(card.id)) return false
-    seen.add(card.id)
-    return true
-  })
+      {/* Hero — vertically centered search focus */}
+      <section className=" flex flex-col items-center justify-center px-6 py-30 text-center">
 
-
- return (
-    <main className="min-h-screen bg-bg">
-      {/* Navbar */}
-      <header className="border-b border-border px-6 py-4 flex items-center gap-3">
-        <h1 className="font-display text-2xl font-bold text-primary tracking-wide">
-          Jogress
+        {/* Logo / Title */}
+        <div className="mb-2">
+          <span className="text-xs uppercase tracking-[0.3em] text-text font-medium">
+            Digimon TCG
+          </span>
+        </div>
+        <h1 className="font-display text-6xl font-bold tracking-widest uppercase mb-2">
+          <span className="text-primary">Jog</span>
+          <span className="text-secondary">ress</span>
         </h1>
-        <span className="text-muted text-sm">Digimon TCG Card Browser</span>
-      </header>
+        <p className="text-muted text-sm mb-10 max-w-sm">
+          Search and explore every card in the Digimon Card Game
+        </p>
 
-      {/* Card Grid */}
-      <section className="p-6">
-        <p className="text-muted text-sm mb-4">{cards.length} cards loaded</p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {cards.map((card: any, index) => (
-            <div
-              key={card.id ?? `card-${index}`}
-              className="bg-surface border border-border rounded-[--radius-card] overflow-hidden hover:border-primary transition-colors cursor-pointer"
+        {/* Search bar */}
+        <Suspense>
+          <SearchBar />
+        </Suspense>
+
+        {/* Quick filter pills */}
+        <div className="flex flex-wrap justify-center gap-2 mt-6">
+          {['Red', 'Blue', 'Green', 'Black', 'Yellow', 'Purple', 'White'].map((color) => (
+            <a
+              key={color}
+              href={`/search?color=${color}`}
+              className="text-xs px-3 py-1 rounded-full border border-border text-muted hover:border-primary hover:text-primary transition-colors"
             >
-              <img
-                src={`https://images.digimoncard.io/images/cards/${card.id}.webp`}
-                alt={card.name}
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
+              {color}
+            </a>
           ))}
         </div>
       </section>
+
+      {/* Random cards showcase */}
+      {randomCards.length > 0 && (
+        <section className="px-6 pb-12">
+          <div className="max-w-screen-lg mx-auto">
+            <p className="text-xs uppercase tracking-widest text-faint text-center mb-4">
+              Spotlight
+            </p>
+            <CardGrid cards={randomCards} className="grid grid-cols-3 sm:grid-cols-6 gap-3 justify-items-center"/>
+          </div>
+        </section>
+      )}
+
     </main>
   )
 }
