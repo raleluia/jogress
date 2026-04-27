@@ -6,6 +6,15 @@ It lets you search cards by name or description, browse by set, and dig into ind
 
 ---
 
+## Features
+
+- **Card search**: searches by name and description simultaneously, returns only genuinely matching cards
+- **Card detail page**: full card info: type, colour, DP, play cost, set membership, card image
+- **Set browser**: browse cards organised by set
+- **Pagination**: fast navigation across large result sets
+
+***
+
 ## Stack
 
 - **Next.js 15** (App Router, Server Components)
